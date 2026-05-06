@@ -13,13 +13,16 @@ X = [
     [6, 4, 2],
     [2, 9, 0],
     [10, 20, 3],
-    [10, 2, 5]
+    [10, 2, 5],
+    [4, 10, 3],
+    [5, 2, 4],
+    [6, 12, 2]
 ]
 
-y = [1, 1, 1, 0, 0, 0, 1, 0, 0, 1]
+y = [1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]
 
 # dividir
-X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.2, random_state=42)
+X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # treinar
 modelo = DecisionTreeClassifier(
