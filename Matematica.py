@@ -18,7 +18,7 @@ class Matematica:
         self.divisores = []
         self.primo_ou_nao = ''
         self.raiz_quadrada = 0
-        self.modelo = DecisionTreeClassifier(max_depth=5)
+        self.modelo = DecisionTreeClassifier(max_depth=5, criterion='gini')
         self.treinado = False
 
     def __str__(self):
