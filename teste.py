@@ -7,3 +7,7 @@ jogadores = {'jogador1': randint(1, 6),
 ranking = sorted(jogadores.items(), key=itemgetter(1), reverse=True)
 for pos, jogador in enumerate(ranking):
     print(f'{pos + 1} {jogador[0]}: com {jogador[1]} no dado!')
+
+
+a = open('Testes.text', 'wt+')
+a.close()
