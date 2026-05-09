@@ -30,9 +30,9 @@ class Matematica:
         self.numero = numero
 
     def __treinar_ia(self):
-        x = [[c] for c in range(1, 1001)]
+        x = [[c] for c in range(1, 2001)]
         y = []
-        for c in range(1, 1001):
+        for c in range(1, 2001):
             d = [i for i in range(c, 0, -1) if c % i == 0]
             y.append(1 if len(d) == 2 else 0)
         self.modelo.fit(x, y)
