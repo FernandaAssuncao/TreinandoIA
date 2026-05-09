@@ -12,6 +12,16 @@ def pausa(funcao):
         return funcao(*args, **kwargs)
     return wrapper
 
+def pausa_ia(funcao):
+    def wrapper(*args, **kwargs):
+        print('🤖 A IA esta processando', end='')
+        for _ in range(4):
+            print('.', end='', flush=True)
+            sleep(0.4)
+        print('\n')
+        return funcao(*args, **kwargs)
+    return wrapper
+
 class Matematica:
     def __init__(self):
         self.numero = 0
@@ -43,6 +53,7 @@ class Matematica:
         self.modelo.fit(x, y)
         self.treinado = True
 
+    @pausa_ia
     def sugerir_proximo_numero_ia(self):
         if not self.treinado:
             self.__treinar_ia()
@@ -70,6 +81,7 @@ class Matematica:
                 print(f'🤖 A IA nao encontrou nenhum numero primo por perto!')
                 break
 
+    @pausa_ia
     def palpite_ia(self):
         if not self.treinado:
             self.__treinar_ia()
