@@ -18,7 +18,7 @@ class Matematica:
         self.divisores = []
         self.primo_ou_nao = ''
         self.raiz_quadrada = 0
-        self.modelo = DecisionTreeClassifier(max_depth=5, criterion='gini')
+        self.modelo = DecisionTreeClassifier(max_depth=10, criterion='gini')
         self.treinado = False
 
     def __str__(self):
@@ -29,19 +29,52 @@ class Matematica:
             self.divisores.clear()
         self.numero = numero
 
+    def __gerar_pistas(self, n):
+        return [n % 2, n % 3, n % 5, n % 7, n % 11, n % 13, n % 17]
+
     def __treinar_ia(self):
-        x = [[c] for c in range(1, 2001)]
         y = []
+        x = []
         for c in range(1, 2001):
-            d = [i for i in range(c, 0, -1) if c % i == 0]
-            y.append(1 if len(d) == 2 else 0)
+            pista = self.__gerar_pistas(c)
+            x.append(pista)
+            d = [i for i in range(1, int(sqrt(c)) + 1) if c % i == 0]
+            y.append(1 if len(d) == 1 and c > 1 else 0)
         self.modelo.fit(x, y)
         self.treinado = True
+
+    def sugerir_proximo_numero_ia(self):
+        if not self.treinado:
+            self.__treinar_ia()
+        distancia = 1
+        while True:
+            vizinhos = [self.numero + distancia, self.numero - distancia]
+            for v in vizinhos:
+                if v > 2:
+                    pistas = [self.__gerar_pistas(v)]
+                    if self.modelo.predict(pistas)[0] == 1:
+                        print(f'DICA DA IA 🤖: O numero {self.numero} não é primo!')
+                        print(f'Mas eu encontrei o numero {v} que parece ser!')
+                        while True:
+                            decisao = str(input('Deseja mudar para ele? [s/n] ')).strip().lower()
+                            if decisao == 'n' or decisao == 's':
+                                break
+                            else:
+                                print('Erro digite uma opção valida')
+                        if decisao == 's':
+                            self.mudar_numero(numero=v)
+                            print(f'Numero alterado para {self.numero} com sucesso!')
+                        return
+            distancia += 1
+            if distancia == 20:
+                print(f'🤖 A IA nao encontrou nenhum numero primo por perto!')
+                break
 
     def palpite_ia(self):
         if not self.treinado:
             self.__treinar_ia()
-        previsao = self.modelo.predict([[self.numero]])
+        pistas_atuais = [self.__gerar_pistas(self.numero)]
+        previsao = self.modelo.predict(pistas_atuais)
         if previsao[0] == 1:
             print(f'🤖 A IA acha que o numero {self.numero} É PRIMO!')
         else:
@@ -89,8 +122,9 @@ while True:
     [2] divisores
     [3] primo ou nao? 
     [4] raiz quadrada
-    [5]🤖 palpite IA
-    [6] sair''')
+    [5] 🤖 palpite IA
+    [6] 🤖 Encontrar numeros primos proximos
+    [7] sair''')
     print('=' * 25)
     try:
         opcao = int(input('Digite uma opcao: '))
@@ -110,6 +144,8 @@ while True:
         elif opcao == 5:
             mat.palpite_ia()
         elif opcao == 6:
+            mat.sugerir_proximo_numero_ia()
+        elif opcao == 7:
             break
         else:
             print('Opcao invalida!')
