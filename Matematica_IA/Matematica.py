@@ -1,4 +1,4 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from time import sleep
 from math import sqrt
 
@@ -28,7 +28,7 @@ class Matematica:
         self.divisores = []
         self.primo_ou_nao = ''
         self.raiz_quadrada = 0
-        self.modelo = DecisionTreeClassifier(max_depth=10, criterion='gini')
+        self.modelo = RandomForestClassifier(n_estimators=100, max_depth=15, random_state=42)
         self.treinado = False
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Matematica:
         self.numero = numero
 
     def __gerar_pistas(self, n):
-        return [n % 2, n % 3, n % 5, n % 7, n % 11, n % 13, n % 17]
+        return [n % 2, n % 3, n % 5, n % 7, n % 11, n % 13, n % 17, n % 19, n % 23, n % 29, n % 31]
 
     def __treinar_ia(self):
         y = []
