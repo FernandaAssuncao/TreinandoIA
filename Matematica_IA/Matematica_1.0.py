@@ -7,6 +7,9 @@ class MatematicaIa:
         self.primo_ou_nao = False
         self.__treinar_ia()
 
+    def __str__(self):
+        return 'Uma classe que calcula numeros primos com IA'
+
     def __gerar_pistas(self, n):
         return [n % 2, n % 3, n % 5, n % 7, n % 11, n % 13, n % 17, n % 19, n % 23, n % 29, n % 31,
                 n % 37, n % 41, n % 43, n % 47]
