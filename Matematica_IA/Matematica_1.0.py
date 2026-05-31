@@ -37,7 +37,6 @@ class InterfaceMatematica(ctk.CTk):
         super().__init__()
 
         self.ia = MatematicaIa()
-        self.ia.prever(4000)
         self.title('Matematica')
         self.geometry('450x300')
         self._set_appearance_mode('dark')
