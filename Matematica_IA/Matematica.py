@@ -125,39 +125,39 @@ class Matematica:
         else:
             print('Erro, mude o numero!')
 
-
-mat = Matematica()
-while True:
-    print('=' * 25)
-    print(''' MATEMATICANDO 
-    [1] mudar numero
-    [2] divisores
-    [3] primo ou nao? 
-    [4] raiz quadrada
-    [5] 🤖 palpite IA
-    [6] 🤖 Encontrar numeros primos proximos
-    [7] sair''')
-    print('=' * 25)
-    try:
-        opcao = int(input('Digite uma opcao: '))
-    except ValueError:
-        print('Opcao invalida!')
-        continue
-    else:
-        if opcao == 1:
-            num = int(input('Digite um numero: '))
-            mat.mudar_numero(num)
-        elif opcao == 2:
-            mat.mostrar_divisores()
-        elif opcao == 3:
-            mat.verificar_primo_ou_nao()
-        elif opcao == 4:
-            mat.raiz_quadradaa()
-        elif opcao == 5:
-            mat.palpite_ia()
-        elif opcao == 6:
-            mat.sugerir_proximo_numero_ia()
-        elif opcao == 7:
-            break
-        else:
+if __name__ == '__main__':
+    mat = Matematica()
+    while True:
+        print('=' * 25)
+        print(''' MATEMATICANDO 
+        [1] mudar numero
+        [2] divisores
+        [3] primo ou nao? 
+        [4] raiz quadrada
+        [5] 🤖 palpite IA
+        [6] 🤖 Encontrar numeros primos proximos
+        [7] sair''')
+        print('=' * 25)
+        try:
+            opcao = int(input('Digite uma opcao: '))
+        except ValueError:
             print('Opcao invalida!')
+            continue
+        else:
+            if opcao == 1:
+                num = int(input('Digite um numero: '))
+                mat.mudar_numero(num)
+            elif opcao == 2:
+                mat.mostrar_divisores()
+            elif opcao == 3:
+                mat.verificar_primo_ou_nao()
+            elif opcao == 4:
+                mat.raiz_quadradaa()
+            elif opcao == 5:
+                mat.palpite_ia()
+            elif opcao == 6:
+                mat.sugerir_proximo_numero_ia()
+            elif opcao == 7:
+                break
+            else:
+                print('Opcao invalida!')
