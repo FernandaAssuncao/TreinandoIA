@@ -47,13 +47,14 @@ class InterfaceMatematica(ctk.CTk):
         self.frame = ctk.CTkFrame(self, border_color='#C71585', border_width=1)
         self.frame.grid(row=1, column=0, columnspan=4, pady=20, padx=20, sticky='nsew')
 
-        self.titulo_frame = ctk.CTkLabel(self.frame, text='Historico de Numeros', text_color='#C71585',
+        self.titulo_frame = ctk.CTkLabel(self.frame, text='Historico de Números:', text_color='#C71585',
                                          font=('Century Gothic', 15, 'bold'), height=40, corner_radius=10)
         self.titulo_frame.grid(row=0, column=0, columnspan=2, pady=20, padx=20)
 
         self.conteudo_frame = ctk.CTkLabel(self.frame, text='', text_color='#DB7093',
                                            font=('Arial', 12, 'bold'))
         self.conteudo_frame.grid(row=0, column=2, columnspan=2, pady=20, padx=20)
+        self.frame.columnconfigure(0, weight=1)
 
         self.atualizar_historico()
 
@@ -100,10 +101,8 @@ class InterfaceMatematica(ctk.CTk):
         if not os.path.exists(self.arquivo_historico):
             with open(self.arquivo_historico, 'w') as f:
                 pass
-
         with open(self.arquivo_historico, 'r', encoding='UTF-8') as arquivo:
             conteudo = arquivo.read()
-
         self.conteudo_frame.configure(text=conteudo)
 
     def adicionar_no_arquivo(self, numero, resposta_texto):
