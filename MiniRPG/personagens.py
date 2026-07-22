@@ -17,6 +17,10 @@ class Personagem(ABC):
 
     def atacar(self, alvo, forca):
         if self.vida > 0 and alvo.vida > 0:
+            if self.__class__.__name__ == 'Assassino':
+                self.ganhar_pontos()
+                if self._pontos == 5:
+                    self.ataques_especiais()
             golpe = choice(self.golpes)
             print(f'O [green]{self.nome}[/] lançou o golpe [yellow]{golpe}[/] em [cyan]{alvo.nome}[/]')
             alvo.receber_dano(forca)
@@ -63,11 +67,11 @@ class Mago(Personagem):
     def ataques_especiais(self):
         pass
 
-class Assasino(Personagem):
+class Assassino(Personagem):
     def __init__(self, nome, vida):
         super().__init__(nome, vida)
         self.vida_total = vida
-        self.pontos = 0
+        self._pontos = 0
         self.golpes = ['Adega Envenenada', 'Ataque Furtivo', 'Golpe de Faca', 'Ataque das Sombras']
 
     def curar(self):
@@ -76,6 +80,21 @@ class Assasino(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'O [magenta]{self.nome}[/] fez curativo para cessar o sagramento e recuperou [green]{fator} pontos de vida[/]')
+
+    @property
+    def pontos(self):
+        return self._pontos
+
+    @pontos.setter
+    def pontos(self, valor=1):
+        if self._pontos > 5:
+            self._pontos = 0
+        else:
+            self._pontos = self._pontos + valor
+
+    def ganhar_pontos(self):
+        self.pontos = 1
+        print(f'O [purple]{self.nome}[/] ganhou 1 ponto. Total [blue]{self._pontos}[/] pontos.')
 
     def ataques_especiais(self):
         pass
