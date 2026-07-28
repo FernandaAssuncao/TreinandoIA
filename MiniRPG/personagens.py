@@ -15,6 +15,7 @@ class Personagem(ABC):
         if self.vida < 0:
             self.vida = 0
         print(f'O [blue]{self.nome}[/] levou [red]{fator}[/] dano!')
+        return f'{self.nome} levou {fator} dano'
 
     def receber_dano_especial(self, dano):
         self.vida = self.vida - dano
@@ -26,9 +27,11 @@ class Personagem(ABC):
         if self.vida > 0 and alvo.vida > 0:
             golpe = choice(self.golpes)
             print(f'O [green]{self.nome}[/] lançou o golpe [yellow]{golpe}[/] em [cyan]{alvo.nome}[/]')
-            alvo.receber_dano(forca)
+            recebido = alvo.receber_dano(forca)
+            return f'O {self.nome} lançou o golpe {golpe} em {alvo.nome} ' + recebido
         else:
             print('Não foi possivel realizar esse ataque!')
+            return f'O {self.nome} não pode realizar o ataque!'
 
     def placar(self):
         mensagem = f':white_medium_star: [magenta] Vida: {self.vida}[/]'
@@ -56,6 +59,7 @@ class Guerreiro(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'[cyan]{self.nome}[/] enrolou uma atadura nos ferimentos e [magenta]recuperou {fator} pontos de vida![/]')
+        return f'O {self.nome} enrolou uma atadura nos ferimentos e recuperou {fator} pontos de vida'
 
     def ataques_especiais(self, alvo):
         fator = randint(4000, 5000)
@@ -75,11 +79,13 @@ class Mago(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'[cyan]{self.nome}[/] fez uma magia de cura e [magenta]recuperou {fator} pontos de vida![/]')
+        return f'{self.nome} fez uma magia de cura e recuperou {fator} pontos de vida!'
 
     def ataques_especiais(self, alvo):
         fator = randint(6000, 7000)
         print(f'O {self.nome} Lançou uma magia de raio explosivo que causou {fator} dano!')
         alvo.receber_dano_especial(fator)
+        return f'O {self.nome} lançou uma magia de raio explosivo e causou {fator} dano!'
 
 
 class Assassino(Personagem):
@@ -95,6 +101,7 @@ class Assassino(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'O [magenta]{self.nome}[/] fez curativo para cessar o sagramento e recuperou [green]{fator} pontos de vida[/]')
+        return f'O {self.nome} fez um curativo para cessar o sangramento e recuperou {fator} pontos de vida'
 
     @property
     def pontos(self):
@@ -113,10 +120,13 @@ class Assassino(Personagem):
     def ataques_especiais(self, alvo):
         if self._pontos == 5:
             fator = randint(5000, 7000)
-            print(f'O {self.nome} lançou sua foice e causou {fator} dano!')
+            mensagem = f'O {self.nome} lançou sua foice e causou {fator} dano!'
+            print(mensagem)
             alvo.receber_dano_especial(fator)
+            return mensagem
         else:
             print('Pontos insuficientes lançe ataques normais primeiro!')
+            return f'O {self.nome} não pode lançar um ataque porque tem pontos insuficientes'
 
     def atacar(self, alvo, forca):
         super().atacar(alvo, forca)
@@ -137,11 +147,14 @@ class Principe(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'O [red]{self.nome}[/] ordenou curandeiros e recuperou [blue]{fator} pontos de vida![/]')
+        return f'{self.nome} ordenou curandeiros e recuperou {fator} pontos de vida'
 
     def ataques_especiais(self, alvo):
         fator = randint(7000, 8000)
-        print(f'O {self.nome} pegou sua espada e declarou o avanço da cavalaria real e causou {fator} dano!')
+        mensagem = f'O {self.nome} pegou sua espada e declarou o avanço da cavalaria real e causou {fator} dano!'
+        print(mensagem)
         alvo.receber_dano_especial(fator)
+        return mensagem
 
 
 class Princesa(Personagem):
@@ -156,8 +169,12 @@ class Princesa(Personagem):
         if self.vida > self.vida_total:
             self.vida = self.vida_total
         print(f'O [green]{self.nome}[/] ordenou curandeiros especiais e recuperou [yellow]{fator} pontos de vida![/]')
+        return f'{self.nome} ordenou curandeiros especiais e recuperou {fator} pontos de vida!'
+
 
     def ataques_especiais(self, alvo):
         fator = randint(7000, 8000)
-        print(f'A {self.nome} Lançou resgate especial e causou {fator} dano.')
+        mensagem = f'A {self.nome} Lançou resgate especial e causou {fator} dano.'
+        print(mensagem)
         alvo.receber_dano_especial(fator)
+        return mensagem
