@@ -1,8 +1,11 @@
+from langchain_core.runnables import RunnableConfig
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 from typing import Literal, TypedDict
+from langgraph.graph import StateGraph, START, END
+import asyncio
 import os
 
 load_dotenv()
@@ -38,10 +41,40 @@ prompt_roteador = ChatPromptTemplate.from_messages(
 
 roteador = prompt_roteador | modelo.with_structured_output(Rota)
 
-def responda(pergunta: str):
-    rota = roteador.invoke({'query': pergunta})
-    if rota['destino'] == 'praia':
-        return cadeia_praia.invoke({'query': pergunta})
-    return cadeia_montanha.invoke({'query': pergunta})
 
-print(responda('quero passear por praias belas'))
+class Estado(TypedDict):
+    query: str
+    destino: Rota
+    resposta: str
+
+
+async def no_roteador(estado: Estado, config=RunnableConfig):
+    return {'destino': await roteador.ainvoke({'query': estado['query']}, config=config)}
+
+async def no_praia(estado: Estado, config=RunnableConfig):
+    return {'resposta': await cadeia_praia.ainvoke({'query': estado['query']}, config=config)}
+
+async def no_montanha(estado: Estado, config=RunnableConfig):
+    return {'resposta': await cadeia_montanha.ainvoke({'query': estado['query']}, config=config)}
+
+def escolher_no(estado:Estado) -> Literal['praia', 'montanha']:
+    return 'praia' if estado['destino']['destino'] == 'praia' else 'montanha'
+
+grafo = StateGraph(Estado)
+grafo.add_node('rotear', no_roteador)
+grafo.add_node('praia', no_praia)
+grafo.add_node('montanha', no_montanha)
+grafo.add_edge(START, 'rotear')
+grafo.add_conditional_edges('rotear', escolher_no)
+grafo.add_edge('praia', END)
+grafo.add_edge('montanha', END)
+
+app = grafo.compile()
+
+async def main():
+    resposta = await app.ainvoke(
+        {'query': 'Quero visitar um lugar no brasil famoso por praias e culturas.'}
+    )
+    print(resposta['resposta'])
+
+asyncio.run(main())
