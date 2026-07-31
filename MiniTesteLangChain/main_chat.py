@@ -49,3 +49,4 @@ for pergunta in lista_perguntas:
     )
     print('Usuario: ', pergunta)
     print('IA', resposta)
+
