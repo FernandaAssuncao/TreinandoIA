@@ -1,9 +1,12 @@
 from sklearn.ensemble import RandomForestClassifier
 import customtkinter as ctk
 import os
+import joblib
 
 
 class Matematica:
+    nome_arquivo = 'modelo_primo.joblib'
+
     @staticmethod
     def __gerar_pistas(n):
         return [n % 2, n % 3, n % 5, n % 7, n % 11, n % 13, n % 17, n % 19, n % 23, n % 29, n % 31,
@@ -12,7 +15,7 @@ class Matematica:
     def __init__(self):
         self.modelo = RandomForestClassifier(n_estimators=100, max_depth=14, random_state=42)
         self.primo_ou_nao = False
-        self.__treinar_ia()
+        self.vefiricar()
 
     def __treinar_ia(self):
         x = []
@@ -31,6 +34,16 @@ class Matematica:
             self.primo_ou_nao = True
         else:
             self.primo_ou_nao = False
+
+    def __salvar_modelo(self):
+        joblib.dump(self.modelo, self.nome_arquivo)
+
+    def vefiricar(self):
+        if os.path.exists(self.nome_arquivo):
+            self.modelo = joblib.load(self.nome_arquivo)
+        else:
+            self.__treinar_ia()
+            self.__salvar_modelo()
 
 
 class InterfaceMatematica(ctk.CTk):
