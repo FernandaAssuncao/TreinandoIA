@@ -47,7 +47,7 @@ if __name__ == '__main__':
         runnable=cadeia,
         get_session_history=historico_por_sessao,
         input_messages_key='query',
-        history_messages__key='historico',
+        history_messages_key='historico',
     )
 
     jg1 = Principe('Heitor Cortês', 9000)
