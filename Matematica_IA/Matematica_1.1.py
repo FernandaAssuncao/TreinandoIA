@@ -64,8 +64,15 @@ class InterfaceMatematica(ctk.CTk):
                                          font=('Century Gothic', 15, 'bold'), height=40, corner_radius=10)
         self.titulo_frame.grid(row=0, column=0, columnspan=2, pady=20, padx=20)
 
-        self.conteudo_frame = ctk.CTkLabel(self.frame, text='', text_color='#DB7093',
-                                           font=('Arial', 12, 'bold'))
+        self.conteudo_frame = ctk.CTkTextbox(
+            self.frame,
+            height=120,  # Altura fixa com rolagem interna
+            text_color="#DB7093",
+            font=("Arial", 12, "bold"),
+            border_color="#FF69B4",
+            border_width=1,
+            corner_radius=10,
+        )
         self.conteudo_frame.grid(row=0, column=2, columnspan=2, pady=20, padx=20)
         self.frame.columnconfigure(0, weight=1)
 
@@ -81,6 +88,7 @@ class InterfaceMatematica(ctk.CTk):
 
         self.campo = ctk.CTkEntry(self, border_color='#FF1493', border_width=2, corner_radius=50)
         self.campo.grid(row=2, column=2, columnspan=2, pady=20, padx=20, sticky='nsew')
+        self.campo.bind("<Return>", lambda event: self.gerar_resposta())
 
         self.resposta = ctk.CTkLabel(self, text='', text_color='#FF1493', font=('Arial', 12, 'bold'))
         self.resposta.grid(row=3, column=0, columnspan=2, pady=20, padx=20, sticky='nsew')
@@ -116,7 +124,15 @@ class InterfaceMatematica(ctk.CTk):
                 pass
         with open(self.arquivo_historico, 'r', encoding='UTF-8') as arquivo:
             conteudo = arquivo.read()
-        self.conteudo_frame.configure(text=conteudo)
+        self.conteudo_frame.configure(
+            state="normal"
+        )  # Permite alterar o texto
+        self.conteudo_frame.delete("0.0", "end")  # Limpa o conteúdo anterior
+        self.conteudo_frame.insert("0.0", conteudo)  # Insere o novo histórico
+        self.conteudo_frame.see("end")  # Rola automaticamente para o final
+        self.conteudo_frame.configure(
+            state="disabled"
+        )
 
     def adicionar_no_arquivo(self, numero, resposta_texto):
         with open(self.arquivo_historico, 'a', encoding='UTF-8') as arquivo:
