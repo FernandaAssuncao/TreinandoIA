@@ -60,7 +60,7 @@ class InterfaceMatematica(ctk.CTk):
         self.frame = ctk.CTkFrame(self, border_color='#C71585', border_width=1)
         self.frame.grid(row=1, column=0, columnspan=4, pady=20, padx=20, sticky='nsew')
 
-        self.titulo_frame = ctk.CTkLabel(self.frame, text='Historico de Números:', text_color='#C71585',
+        self.titulo_frame = ctk.CTkLabel(self.frame, text='Historico de\n Números:', text_color='#C71585',
                                          font=('Century Gothic', 15, 'bold'), height=40, corner_radius=10)
         self.titulo_frame.grid(row=0, column=0, columnspan=2, pady=20, padx=20)
 
