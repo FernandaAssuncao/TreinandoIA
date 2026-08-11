@@ -15,7 +15,7 @@ class Matematica:
     def __init__(self):
         self.modelo = RandomForestClassifier(n_estimators=100, max_depth=14, random_state=42)
         self.primo_ou_nao = False
-        self.vefiricar()
+        self.verificar()
 
     def __treinar_ia(self):
         x = []
@@ -38,7 +38,7 @@ class Matematica:
     def __salvar_modelo(self):
         joblib.dump(self.modelo, self.nome_arquivo)
 
-    def vefiricar(self):
+    def verificar(self):
         if os.path.exists(self.nome_arquivo):
             self.modelo = joblib.load(self.nome_arquivo)
         else:
@@ -114,6 +114,7 @@ class InterfaceMatematica(ctk.CTk):
             self.campo.configure(border_color=cor)
             self.adicionar_no_arquivo(numero, text_res)
             self.atualizar_historico()
+            self.campo.delete(0, 'end')
         except ValueError:
             self.resposta.configure(text='ERRO, DIGITE UM VALOR INTEIRO', text_color='#FF0000')
             self.campo.configure(border_color='#FF0000')
