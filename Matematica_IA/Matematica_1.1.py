@@ -20,7 +20,7 @@ class Matematica:
     def __treinar_ia(self):
         x = []
         y = []
-        for c in range(1, 3001):
+        for c in range(1, 10001):
             pistas = self.__gerar_pistas(c)
             x.append(pistas)
             d = [i for i in range(c, 0, -1) if c % i == 0]
