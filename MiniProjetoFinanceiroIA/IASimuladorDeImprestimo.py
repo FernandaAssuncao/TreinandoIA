@@ -51,6 +51,5 @@ class IAFinanceira:
         resultado = self.__modelo.predict_proba([[idade, salario, valor, nome_limpo]])
         return resultado[0][1]
 
-    def __atualizar_historico(self):
-        self.__treinar_ia()
-        self.__salvar_modelo()
+    def __atualizar_treinamento_da_ia(self):
+        pass

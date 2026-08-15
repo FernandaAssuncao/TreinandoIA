@@ -24,3 +24,11 @@ class GerenciarDados:
                       'Nome Limpo': nome_limpo, 'Status': status, 'Data': data}])
         nova_linha.to_csv(self.arquivo_dados, mode='a', index=False, header=False)
         print('Salvo com sucesso!')
+
+    def gerar_conteudo_para_historico(self):
+        texto = ''
+        df = pd.read_csv(self.arquivo_dados)
+        dados = df.to_dict(orient='records')
+        for pessoa in dados:
+            texto += f'Status: {pessoa["Status"]}\n'
+        return texto

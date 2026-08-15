@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 class Cliente(ABC):
     def __init__(self, idade:int, salario:float, nome_limpo:int):

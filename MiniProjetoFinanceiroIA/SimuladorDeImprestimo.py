@@ -10,7 +10,7 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
         self.ia = IAFinanceira()
 
         self.title('Simulador de Imprestimo')
-        self.geometry('550x550')
+        self.geometry('550x600')
         self._set_appearance_mode('dark')
         self.columnconfigure(0, weight=1)
 
@@ -67,6 +67,27 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
                                    font=('Century Gothic', 19, 'bold'), hover_color='#008B8B')
         self.botao.grid(row=5, column=2, columnspan=2, padx=20, pady=20, sticky='nsew')
 
+        self.frame = ctk.CTkFrame(self, border_color='#00BFFF', border_width=1)
+        self.frame.grid(row=6, column=0, columnspan=4, padx=20, pady=20, sticky='nsew')
+
+        self.mensagem_frame = ctk.CTkLabel(self.frame, text='Historico de Pedidos',
+                                           text_color='#1E90FF', font=('Arial', 16, 'bold'))
+        self.mensagem_frame.grid(row=0, column=0, columnspan=2, padx=20, pady=20, sticky='nsew')
+
+        self.conteudo_frame = ctk.CTkTextbox(
+            self.frame,
+            height=100,  # Altura fixa com rolagem interna
+            text_color="#1E90FF",
+            font=("Arial", 12, "bold"),
+            border_color="#00BFFF",
+            border_width=1,
+            corner_radius=10,
+        )
+        self.conteudo_frame.grid(row=0, column=2, columnspan=2, padx=20, pady=20, sticky='nsew')
+        self.frame.columnconfigure(0, weight=1)
+
+        self.colocar_conteudo()
+
 
     def gerar_resposta(self):
         try:
@@ -91,6 +112,7 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             g = GerenciarDados()
             g.salvar_novo_dado(cliente.idade, cliente.salario, cliente.valor_solicitado,
                                cliente.nome_limpo, cliente.status)
+            self.colocar_conteudo()
         except ValueError:
             cor = '#FF3B30'
             self.campo_idade.configure(border_color=cor)
@@ -98,6 +120,19 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             self.campo_valor.configure(border_color=cor)
             self.resposta.configure(text='ERRO, por favor digite\n oque se pede corretamente!',
                                     text_color=cor)
+
+    def colocar_conteudo(self):
+        g = GerenciarDados()
+        conteudo = g.gerar_conteudo_para_historico()
+        self.conteudo_frame.configure(
+            state="normal"
+        )  # Permite alterar o texto
+        self.conteudo_frame.delete("0.0", "end")  # Limpa o conteúdo anterior
+        self.conteudo_frame.insert("0.0", conteudo)  # Insere o novo histórico
+        self.conteudo_frame.see("end")  # Rola automaticamente para o final
+        self.conteudo_frame.configure(
+            state="disabled"
+        )
 
 if __name__ == '__main__':
     tela = InterfaceSimuladorImprestimo()
