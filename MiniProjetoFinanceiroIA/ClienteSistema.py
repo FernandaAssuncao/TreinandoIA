@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 class Cliente(ABC):
     def __init__(self, idade:int, salario:float, nome_limpo:int):
-        self._idade = idade
-        self._salario = salario
-        self._nome_limpo = nome_limpo
+        self.idade = idade
+        self.salario = salario
+        self.nome_limpo = nome_limpo
 
 
 class PropostaImprestimo(Cliente):

@@ -1,6 +1,7 @@
 from ClienteSistema import PropostaImprestimo
 from IASimuladorDeImprestimo import IAFinanceira
 import customtkinter as ctk
+from GerenciadorDeDados import GerenciarDados
 
 
 class InterfaceSimuladorImprestimo(ctk.CTk):
@@ -42,16 +43,20 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
         self.campo_valor = ctk.CTkEntry(self, border_color='#00BFFF', border_width=2,
                                         corner_radius=50)
         self.campo_valor.grid(row=3, column=2, columnspan=1, padx=20, pady=20, sticky='nsew')
-        self.campo_valor.bind("<Return>", lambda event: self.campo_nome_limpo.focus_set())
+        self.campo_valor.bind("<Return>", lambda event: self.gerar_resposta())
 
-        self.mensagem4 = ctk.CTkLabel(self, text='SEU NOME ESTÁ LIMPO? [1]SIM E [0] NÃO ',
+
+        self.mensagem4 = ctk.CTkLabel(self, text='SEU NOME ESTÁ LIMPO?\n [SIM] ligado e [NÃO] desligado ',
                                       text_color='#1E90FF', font=('Arial', 15, 'bold'))
         self.mensagem4.grid(row=4, column=0, columnspan=1, padx=20, pady=20, sticky='nsew')
 
-        self.campo_nome_limpo = ctk.CTkEntry(self, border_color='#00BFFF', border_width=2,
-                                             corner_radius=50)
-        self.campo_nome_limpo.grid(row=4, column=2, columnspan=1, padx=20, pady=20, sticky='nsew')
-        self.campo_nome_limpo.bind("<Return>", lambda event: self.gerar_resposta())
+        self.switch_nome_limpo = ctk.CTkSwitch(
+            self,
+            text="Nome Limpo",
+            font=('Arial', 14, 'bold'),
+            progress_color='#00BFFF'  # Cor quando estiver ligado
+        )
+        self.switch_nome_limpo.grid(row=4, column=2, columnspan=2, padx=20, pady=20, sticky='nsew')
 
         self.resposta = ctk.CTkLabel(self, text='', text_color='#1E90FF', font=('Arial', 15, 'bold'))
         self.resposta.grid(row=5, column=0, columnspan=2, padx=20, pady=20, sticky='nsew')
@@ -68,7 +73,7 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             idade = int(self.campo_idade.get())
             salario = float(self.campo_salario.get())
             valor = float(self.campo_valor.get())
-            nome_limpo = int(self.campo_nome_limpo.get())
+            nome_limpo = int(self.switch_nome_limpo.get())
             cliente = PropostaImprestimo(idade, salario, nome_limpo, valor)
             previsao = self.ia.prever(idade, salario, valor, nome_limpo)
             if previsao:
@@ -83,13 +88,14 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             self.campo_idade.configure(border_color=cor)
             self.campo_salario.configure(border_color=cor)
             self.campo_valor.configure(border_color=cor)
-            self.campo_nome_limpo.configure(border_color=cor)
+            g = GerenciarDados()
+            g.salvar_novo_dado(cliente.idade, cliente.salario, cliente.valor_solicitado,
+                               cliente.nome_limpo, cliente.status)
         except ValueError:
             cor = '#FF3B30'
             self.campo_idade.configure(border_color=cor)
             self.campo_salario.configure(border_color=cor)
             self.campo_valor.configure(border_color=cor)
-            self.campo_nome_limpo.configure(border_color=cor)
             self.resposta.configure(text='ERRO, por favor digite\n oque se pede corretamente!',
                                     text_color=cor)
 
