@@ -100,11 +100,11 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             if previsao:
                 cliente.status = 'aprovado'
                 cor = '#7FFFD4'
-                texto = f'Parabens, o imprestimo no valor de R${cliente.valor_solicitado}\n foi {cliente.status}.'
+                texto = f'Parabéns, o Empréstimo no valor de R${cliente.valor_solicitado}\n foi {cliente.status}.'
             else:
                 cliente.status = 'reprovado'
                 cor = '#9B111E'
-                texto = f'Sinto muito, o imprestimo no valor de R${cliente.valor_solicitado}\n foi {cliente.status}.'
+                texto = f'Sinto muito, o Empréstimo no valor de R${cliente.valor_solicitado}\n foi {cliente.status}.'
             self.resposta.configure(text=texto, text_color=cor)
             self.campo_idade.configure(border_color=cor)
             self.campo_salario.configure(border_color=cor)
@@ -118,7 +118,7 @@ class InterfaceSimuladorImprestimo(ctk.CTk):
             self.campo_idade.configure(border_color=cor)
             self.campo_salario.configure(border_color=cor)
             self.campo_valor.configure(border_color=cor)
-            self.resposta.configure(text='ERRO, por favor digite\n oque se pede corretamente!',
+            self.resposta.configure(text='ERRO, por favor digite\n O que se pede corretamente!',
                                     text_color=cor)
 
     def colocar_conteudo(self):

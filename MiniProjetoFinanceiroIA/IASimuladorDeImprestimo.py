@@ -8,6 +8,38 @@ class IAFinanceira:
     nome_arquivo = 'modelo_sistema_financeiro.joblib'
     arquivo_dados = 'historico_credito.csv'
 
+    @staticmethod
+    def __pontuacao(idade:int, salario:float, valor:float, nome_limpo:int):
+        score = 0
+
+        if nome_limpo == 1:
+            score += 50
+        else:
+            score -= 50
+
+
+        if salario >= 10000:
+            score += 20
+        elif salario >= 5000:
+            score += 10
+
+        relacao = valor / salario
+
+        if relacao <= 3:
+            score += 30
+        elif relacao <= 6:
+            score += 20
+        elif relacao <= 10:
+            score += 5
+        else:
+            score -= 30
+
+        if 25 <= idade <= 60:
+            score += 10
+        elif 18 <= idade < 25:
+            score += 5
+        return 1 if score >= 60 else 0
+
     def __init__(self):
         self.__modelo = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
         self.__treinada = False
@@ -21,10 +53,7 @@ class IAFinanceira:
             salario = randint(1200, 50000)
             valor_solicitado = randint(5000, 200000)
             nome_limpo = choice([0, 1])
-            if nome_limpo == 0 or valor_solicitado > (salario * 10):
-                resultado = 0
-            else:
-                resultado = 1
+            resultado = self.__pontuacao(idade, salario, valor_solicitado, nome_limpo)
             x.append([idade, salario, valor_solicitado, nome_limpo])
             y.append(resultado)
         self.__modelo.fit(x, y)
